@@ -43,6 +43,21 @@ async def get_links(cur_url: str):
     return links
 
 """
+    Deploy App: Schedule App Deployments
+
+    Simulate a list of websites to crawl.  In a more realistic architecture,
+    this would be a dynamically generated list.
+"""
+@app.function(schedule=modal.Period(days=5))
+def daily_scrape():
+    urls = ["https://modal.com", "https://github.com", "https://www.ai.engineer/worldsfair/2024/schedule"]
+
+    for links in get_links.map(urls):
+        for link in links:
+            print(links)
+
+
+"""
     Scaling out
 
     Update our script to fetch a large list of links in parallel.
