@@ -42,8 +42,15 @@ async def get_links(cur_url: str):
 
     return links
 
-@app.local_entrypoint()
-def main(url):
-    links = get_links.remote(url)
+"""
+    Scaling out
 
-    print(links)
+    Update our script to fetch a large list of links in parallel.
+"""
+@app.local_entrypoint()
+def main():
+    urls = ["https://modal.com", "https://github.com"]
+
+    for links in get_links.map(urls):
+        for link in links:
+            print(links)
